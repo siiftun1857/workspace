@@ -103,7 +103,7 @@ int main_game(int argc,char*argv[],char*envp[])
 			record_seed=seed;
 		}
 		//print title
-		cout << "\033c" << "Game of life by Magnussiiftun1857" << " reset:" << reset_count << " record:" << record_seed << "-" << record_count << " seed:" << seed << " count:" << count++ <<endl;
+		cout << "\033[1;1H" << "Game of life by Magnussiiftun1857" << " reset:" << reset_count << " record:" << record_seed << "-" << record_count << " seed:" << seed << " count:" << count++ <<endl;
 //#define printdisable
 #ifndef printdisable
 		//print the park
@@ -113,7 +113,7 @@ int main_game(int argc,char*argv[],char*envp[])
 			for(int j=0;j<parkymax;j++)
 			{
 #if defined(__linux__) || defined(__linux)
-				cout << ((park[i][j]==true)?"\e[32;7m#\e[0m":"\e[0m-\e[0m");
+				cout << ((park[i][j]==true)?"\e[42m#\e[0m":"\e[0m-\e[0m");
 #endif //linux
 #if defined(WINDOWS) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__)
 				if(park[i][j]==true)
