@@ -103,7 +103,7 @@ int main_game(int argc,char*argv[],char*envp[])
 			record_seed=seed;
 		}
 		//print title
-		cout << "\033[1;1H" << "Game of life by Magnussiiftun1857" << " reset:" << reset_count << " record:" << record_seed << "-" << record_count << " seed:" << seed << " count:" << count++ <<endl;
+		cout << "\033c" << "Game of life by Magnussiiftun1857" << " reset:" << reset_count << " record:" << record_seed << "-" << record_count << " seed:" << seed << " count:" << count++ <<endl;
 //#define printdisable
 #ifndef printdisable
 		//print the park
