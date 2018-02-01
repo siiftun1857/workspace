@@ -12,7 +12,7 @@
 '''
 """多行
 注释"""
-#所谓多行注释，实为解释器忽略的字符串
+#	所谓多行注释，实为解释器忽略的多行字符串
 
 #	导入
 import math
@@ -35,7 +35,8 @@ if age >= 18:#条件判断
     print("adult")
 else:
     print("not adult")
-#	r开头表示不格式化 '''或"""表示多行文字
+#	r开头表示不格式化
+#	'''或"""表示多行文字
 print(r'''hello,\n
 world''')
 #	True False and or not
