@@ -29,19 +29,32 @@ PI = 3.14159265359
 5 // 2#2
 5 % 2#1
 
-
-if age >= 18:#条件判断
-#	缩进表示同一代码段
-    print("adult")
-else:
-    print("not adult")
+#	print为输出函数
 #	r开头表示不格式化
 #	'''或"""表示多行文字
 print(r'''hello,\n
 world''')
-#	True False and or not
+
+#	条件判断
+#	缩进表示同一代码段
+#	if else elif 使用 : 结尾
+if age >= 18:
+    print("adult")
+else:
+    print("not adult")
+
+#	True真 False假 and和 or或 not非
 if True or not False:
     print("True or not false")
+
+#	使用elif避免else if带来缩进叠堆
+age = 3
+if age >= 18:
+    print('adult')
+elif age >= 6:
+    print('teenager')
+else:
+    print('kid')
 
 #	单字符编码
 ord('A')#65
@@ -75,6 +88,7 @@ len('中文'.encode('utf-8'))#6
 #	另一种方式
 'Hello, {0}, 成绩提升了 {1:.1f}%'.format('小明', 17.125)#'Hello, 小明, 成绩提升了 17.1%'
 
+
 #	tuple用()声明，指向不可变，单元素tuple：(元素,)
 #	list用[]声明
 t = ('a', 'b', ['A', 'B'])
@@ -83,14 +97,6 @@ t[2][0] = 'X'
 t[2][-1] = 'Y'
 print(t)#('a', 'b', ['X', 'Y'])
 
-#	使用elif
-age = 3
-if age >= 18:
-    print('adult')
-elif age >= 6:
-    print('teenager')
-else:
-    print('kid')
 
 #	input接受输入，输出字符串
 s = input('birth: ')
