@@ -725,3 +725,12 @@ now()
 #	和两层嵌套的decorator相比，3层嵌套的效果是这样的：
 #now = log('execute')(now)
 #	首先执行log('execute')，返回decorator函数，变成decorator(now)，返回值最终是wrapper函数。
+
+#	functools.partial创建一个偏函数，不需要自己定义int2()，可以直接创建一个新的函数int2
+#import functools
+int2 = functools.partial(int, base=2)
+int2('1000000')#64
+int2('1010101')#85
+int2('1000000', base=10)#1000000
+#	functools.partial的作用就是，把一个函数的某些参数给固定住（也就是设置默认值），
+#	返回一个新的函数，调用这个新函数会更简单。
