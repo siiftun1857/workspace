@@ -1,0 +1,73 @@
+<!-- Bsg Machine files DTD for besiege 0.25 to 0.3 -->
+<!-- https://raw.githubusercontent.com/siiftun1857/Webs/master/bsg_v1.dtd -->
+<!ELEMENT Machine (Global,Data?,Blocks)>
+<!ELEMENT Blocks (Block*)>
+<!ELEMENT Block (Transform,Settings?,Data)>
+<!ELEMENT Global (Position,Rotation)>
+<!ELEMENT Transform (Position,Rotation,Scale)>
+<!ELEMENT Settings (Skin)>
+<!ELEMENT Data (StringArray*,String*,Single*,Boolean*,Vector3*,Color*,MKey*,MMenu*,MToggle*,MSlider*,MLimits*,MColourSlider*)>
+
+<!ELEMENT Position EMPTY>
+<!ELEMENT Rotation EMPTY>
+<!ELEMENT Scale EMPTY>
+
+<!ATTLIST Machine
+  version CDATA #FIXED "1"
+  bsgVersion CDATA #IMPLIED
+  name CDATA #REQUIRED>
+<!ATTLIST Block
+  id CDATA #REQUIRED
+  guid CDATA #REQUIRED>
+<!ATTLIST Skin
+  name CDATA #REQUIRED
+  id CDATA #REQUIRED>
+<!ATTLIST Position 
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  z CDATA #REQUIRED>
+<!ATTLIST Rotation
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  z CDATA #REQUIRED
+  w CDATA #REQUIRED>
+<!ATTLIST Scale
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  z CDATA #REQUIRED>
+
+<!ELEMENT X (#PCDATA)>
+<!ELEMENT Y (#PCDATA)>
+<!ELEMENT Z (#PCDATA)>
+<!ELEMENT R (#PCDATA)>
+<!ELEMENT G (#PCDATA)>
+<!ELEMENT B (#PCDATA)>
+
+<!ELEMENT String (#PCDATA)>
+<!ELEMENT StringArray (#PCDATA)>
+<!ELEMENT Single (#PCDATA)>
+<!ELEMENT Boolean (#PCDATA)>
+<!ELEMENT Vector3 (X,Y,Z)>
+<!ELEMENT Color (R,G,B)>
+
+<!ELEMENT MKey (#PCDATA)>
+<!ELEMENT MMenu (#PCDATA)>
+<!ELEMENT MToggle (#PCDATA)>
+<!ELEMENT MSlider (#PCDATA)>
+<!ELEMENT MLimits (#PCDATA)>
+<!ELEMENT MColourSlider (R,G,B)>
+
+<!ATTLIST String key CDATA #REQUIRED>
+<!ATTLIST StringArray key CDATA #REQUIRED>
+<!ATTLIST Single key CDATA #REQUIRED>
+<!ATTLIST Boolean key CDATA #REQUIRED>
+<!ATTLIST Vector3 key CDATA #REQUIRED>
+<!ATTLIST Color key CDATA #REQUIRED>
+<!ATTLIST MKey key CDATA #REQUIRED>
+<!ATTLIST MMenu key CDATA #REQUIRED>
+<!ATTLIST MToggle key CDATA #REQUIRED>
+<!ATTLIST MSlider key CDATA #REQUIRED>
+<!ATTLIST MLimits key CDATA #REQUIRED>
+<!ATTLIST MColourSlider key CDATA #REQUIRED>
+
+<!-- By siiftun1857 -->

@@ -1,0 +1,6 @@
+<!ELEMENT employees (employee*)>
+<!ELEMENT employee (name,sex,age)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT sex (#PCDATA)>
+<!ELEMENT age (#PCDATA)>
+<!ATTLIST employee tag CDATA #IMPLIED>
