@@ -218,7 +218,7 @@ def my_abs(x):
 def nop():
 	pass
 
-#	可定义默认函数，在必选函数之后
+#	可定义默认参数，在必选参数之后
 #	函数可以返回多个值
 def move(x, y, step, angle=0):
 	nx = x + step * math.cos(angle)
@@ -239,7 +239,7 @@ def power(x, n=2):
 power(5)#25
 power(5, 2)#25
 
-#	默认参数的指向 *必须* 是 *不可改变的* ，否则会不稳定
+#	默认参数的指向的量 *必须* 是 *不可改变的* ，否则会不稳定
 #	None无法被改变
 def add_end(L=None):
 	if L is None:
