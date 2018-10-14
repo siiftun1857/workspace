@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE employees SYSTEM "https://raw.githubusercontent.com/siiftun1857/Webs1/master/employees.dtd">
+<employees>
+	<employee tag="1">
+		<name>Mike Magnus</name>
+		<sex>Male</sex>
+		<age>31</age>
+	</employee>
+	<employee tag="2">
+		<name>Mei</name>
+		<sex>Female</sex>
+		<age>31</age>
+	</employee>
+	<employee tag="3">
+		<name>Frank Alice</name>
+		<sex>Female</sex>
+		<age>23</age>
+	</employee>
+</employees>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="GB2312" standalone="no"?>
+<!DOCTYPE employees SYSTEM "https://raw.githubusercontent.com/siiftun1857/Webs1/master/employees.dtd">
+<employees>
+    <employee>
+        <name>Mike Magnus</name>
+        <sex>Male</sex>
+        <age>31</age>
+    </employee>
+</employees>
