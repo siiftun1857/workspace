@@ -9,9 +9,9 @@
 #include <unistd.h>
 #include <time.h>
 using namespace std;
-#define parkxmax 50
-#define parkymax 150
-typedef bool parktype[parkxmax][parkymax];
+#define PARKXMAX 50
+#define PARKYMAX 150
+typedef bool parktype[PARKXMAX][PARKYMAX];
 unsigned long long int reset_count=0;
 parktype park={0};
 parktype parkbuffer={0};
@@ -42,14 +42,14 @@ inline bool lookaround(int x,int y,char dire)//get neighbour cell stat
 	else if(dire==1||dire==7||dire==8)
 		y--;
 
-	if(x>=parkxmax)
+	if(x>=PARKXMAX)
 		x=0;
 	else if(x<0)
-		x=parkxmax-1;
-	if(y>=parkymax)
+		x=PARKXMAX-1;
+	if(y>=PARKYMAX)
 		y=0;
 	else if(y<0)
-		y=parkymax-1;
+		y=PARKYMAX-1;
 
 	return park[x][y];
 }
@@ -86,9 +86,9 @@ int main_game(int argc,char*argv[],char*envp[])
 	{
 		srand(seed=time(NULL));
 	}
-	for(int i=0;i<parkxmax;i++)
+	for(int i=0;i<PARKXMAX;i++)
 	{
-		for(int j=0;j<parkymax;j++)
+		for(int j=0;j<PARKYMAX;j++)
 		{
 			park[i][j]=!((bool)(rand()%4));// 1/4 of the park has live cell
 		}
@@ -107,10 +107,10 @@ int main_game(int argc,char*argv[],char*envp[])
 //#define printdisable
 #ifndef printdisable
 		//print the park
-		for(int i=0;i<parkxmax;i++)
+		for(int i=0;i<PARKXMAX;i++)
 		{
 			cout << "    " ;
-			for(int j=0;j<parkymax;j++)
+			for(int j=0;j<PARKYMAX;j++)
 			{
 #if defined(__linux__) || defined(__linux)
 				cout << ((park[i][j]==true)?"\e[42m#\e[0m":"\e[0m-\e[0m");
@@ -132,18 +132,18 @@ int main_game(int argc,char*argv[],char*envp[])
 		}
 #endif // !printdisable
 		//testfor every cell
-		for(int i=0;i<parkxmax;i++)
+		for(int i=0;i<PARKXMAX;i++)
 		{
-			for(int j=0;j<parkymax;j++)
+			for(int j=0;j<PARKYMAX;j++)
 			{
 				parkbuffer[i][j]=testfor(i,j);
 			}
 		}
 		//sync the park
 		ifdead=true;
-		for(int i=0;i<parkxmax;i++)
+		for(int i=0;i<PARKXMAX;i++)
 		{
-			for(int j=0;j<parkymax;j++)
+			for(int j=0;j<PARKYMAX;j++)
 			{
 				park[i][j]=parkbuffer[i][j];
 				if(nexthis1)//check and write to parkhis
