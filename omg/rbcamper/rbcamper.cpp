@@ -45,21 +45,21 @@ enum blockt{
 enum wdire {
 	UP,DOWN,LEFT,RIGHT
 };
-wdire getL(wdire wfrom)
+inline wdire getL(wdire wfrom)
 {
 	switch(wfrom)
 	{
 	case UP:
 		return LEFT;
-	case RIGHT:
-		return UP;
-	case DOWN:
-		return RIGHT;
 	case LEFT:
 		return DOWN;
+	case DOWN:
+		return RIGHT;
+	case RIGHT:
+		return UP;
 	}
 }
-wdire getR(wdire wfrom)
+inline wdire getR(wdire wfrom)
 {
 	switch(wfrom)
 	{
@@ -71,6 +71,20 @@ wdire getR(wdire wfrom)
 		return LEFT;
 	case LEFT:
 		return UP;
+	}
+}
+inline string wdireToString(wdire wfrom)
+{
+	switch(wfrom)
+	{
+	case UP:
+		return "UP";
+	case LEFT:
+		return "LEFT";
+	case DOWN:
+		return "DOWN";
+	case RIGHT:
+		return "RIGHT";
 	}
 }
 
@@ -87,6 +101,17 @@ int targetslable[PYMAX][PXMAX]={0};
 
 inline blockt getpark(int x,int y){ return park[y][x]; }
 inline int gettarget(int x,int y){ return targetslable[y][x]; }
+inline int taketarget(int x,int y)
+{
+	if(getpark(x,y)==TARGET && targetslable[y][x]!=0)
+	{
+		int ret = targetslable[y][x];
+		targetslable[y][x]=0;
+		return ret;
+	}
+	else
+		throw;
+}
 
 
 class waydump
@@ -99,48 +124,54 @@ public:
 	
 	waydump(wdire wfrom)
 	{
-		from = wfrom;
-		from = getR(wfrom);
+		from = getR(getR(wfrom));
+		facing = getR(wfrom);
 		next_way = nullptr;
 		isroot = false;
 	}
 	
 	waydump(wdire wfrom, bool ifroot)
 	{
-		from = wfrom;
-		from = getR(wfrom);
+		from = getR(getR(wfrom));
+		facing = getR(wfrom);
 		next_way = nullptr;
 		isroot = ifroot;
 	}
 	
-	vector2<int> posdump()//TODO:
+	size_t depth() const
 	{
-		vector2<int> pos={0,0};
+		if(next_way==nullptr)
+		{
+			return 1;
+		}
+		return next_way->depth()+1;
+	}
+	
+	vector2<int> posdump() const
+	{
+		vector2<int> retpos={0,0};
 		switch(from)
 		{
 		case UP:
-			
+			retpos.y++;
 			break;
 		case DOWN:
-			
+			retpos.y--;
 			break;
 		case LEFT:
-			
+			retpos.x++;
 			break;
 		case RIGHT:
-			
+			retpos.x--;
 			break;
 		}
-		if(next_way==nullptr)
-		{
-			return pos;
-		}
-		else
+		if(next_way!=nullptr)
 		{
 			vector2<int> tempos = next_way->posdump();
-			
-			return pos;
+			retpos.x+=tempos.x;
+			retpos.y+=tempos.y;
 		}
+		return retpos;
 	}
 	
 	wdire turnL()
@@ -170,6 +201,15 @@ public:
 			return facing;
 		}
 		return next_way->getdire();
+	}
+	
+	wdire getfrom() const
+	{
+		if(next_way==nullptr)
+		{
+			return from;
+		}
+		return next_way->getfrom();
 	}
 	
 	int goforward()
@@ -204,7 +244,8 @@ public:
 class ABot{
 	public:
 	vector2<int> pos;
-	int angle;
+	size_t score;
+	size_t angle;
 	blockt route[PYMAX][PXMAX];
 	waydump*memdire;
 	
@@ -212,7 +253,17 @@ class ABot{
 		memdire = new waydump(RIGHT);
 	}
 	
+	vector2<int> getpos()
+	{
+		vector2<int> tempos = memdire->posdump();
+		tempos.x--;
+		return tempos;
+	}
 	
+	vector2<int> syncpos()
+	{
+		return pos=getpos();
+	}
 	
 	vector2<int> getplus() const
 	{
@@ -222,16 +273,16 @@ class ABot{
 		switch(memdire->getdire())
 		{
 		case UP:
-			t.y--;
-			break;
-		case DOWN:
 			t.y++;
 			break;
+		case DOWN:
+			t.y--;
+			break;
 		case LEFT:
-			t.x--;
+			t.x++;
 			break;
 		case RIGHT:
-			t.x++;
+			t.x--;
 			break;
 		}
 	}
@@ -270,51 +321,67 @@ class ABot{
 		vector2<int> t = getplus();
 		if(t.x<0 || t.x>PXMAX || t.y<0 || t.y>PYMAX)
 		{
-			return WALL;
+			return false;
 		}
 		else
 		{
 			switch(getpark(t.x,t.y))
 			{
-			case WALL:
-				return route[t.y][t.x]=WALL;
 			case TARGET:
 				if(gettarget(t.x,t.y)!=0)
 				{
-					return route[t.y][t.x]=TARGET;
+					score+=taketarget(t.x,t.y);
+					return true; 
 				}
-			case SPAWN:
-			case BLANK:
-				return route[t.y][t.x]=BLANK;
-				break;
-			case UNDEF:
 			default:
-				throw;
+				return false;
 			}
 		}
 	}
-
+	void output()
+	{
+		cout<<"depth: "<<memdire->depth()<<", x: "<<getpos().x<<", y: "<<getpos().y<<", from: "<<wdireToString(memdire->getfrom())<<", facing: "<<wdireToString(memdire->getdire())<<". "<<endl;
+	}
+	
+	int step()
+	{
+		blockt scanresult=scan();
+		switch(scanresult)
+		{
+			
+		}
+	}
+	
 	int run()
 	{
-		
-	}
+		int stepresult=0;
+		while(true)
+		{
+			stepresult=step();
+			if(stepresult==-1)
+				break;
+		}
+	} 
 };
 
 int main(int argc, char* argv[], char* envp[])
 {
+	
 	if(argc <= 1)
 	{
 		cout << "Usage: rbcamper.cpp <sc1> <sc2> <sc3> <sc4> <sc5> <sc6> <sc7> ... " << endl;
-		exit(EXIT_FAILURE);
+		//exit(EXIT_FAILURE);
 	}
 	if(argc > 8)
 	{
-		cout << "Warning: too many args detected, requirement is one. -- Magnus " << endl;
+		cout << "Warning: too many args detected, requirement is 7. -- Magnus " << endl;
 	}
 	//end args
 	
 	//intake arg
 	
+	ABot aibot1;
+	ABot aibot2;
 	
 	for(size_t i=0,j=0;i<PXMAX*PYMAX;j++)
 	{
@@ -338,6 +405,31 @@ int main(int argc, char* argv[], char* envp[])
 			break;
 		}
 	}
+	cout<<"Map output: "<<endl;
+	for(size_t k=0;k<PXMAX*PYMAX;k++)
+	{
+		switch(park[k/PXMAX][k%PXMAX])
+		{
+		case SPAWN:
+			cout<<"+";
+			break;
+		case BLANK:
+			cout<<"_";
+			break;
+		case WALL:
+			cout<<"#";
+			break;
+		case TARGET:
+			cout<<"@";
+			break;
+		}
+		if(k%PXMAX==PXMAX-1)
+			cout<<endl;
+	}
+	cout<<endl;
+	
+	aibot1.output();
+	
 	
 	//mainexit
 	exit(EXIT_SUCCESS);
