@@ -113,22 +113,22 @@ public:
 		isroot = ifroot;
 	}
 	
-	vector2<int> posdump()
+	vector2<int> posdump()//TODO:
 	{
 		vector2<int> pos={0,0};
 		switch(from)
 		{
 		case UP:
-			t.y--;
+			
 			break;
 		case DOWN:
-			t.y++;
+			
 			break;
 		case LEFT:
-			t.x--;
+			
 			break;
 		case RIGHT:
-			t.x++;
+			
 			break;
 		}
 		if(next_way==nullptr)
@@ -138,7 +138,7 @@ public:
 		else
 		{
 			vector2<int> tempos = next_way->posdump();
-			pos.x += tempos
+			
 			return pos;
 		}
 	}
