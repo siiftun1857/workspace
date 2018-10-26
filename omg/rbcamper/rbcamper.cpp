@@ -95,17 +95,67 @@ public:
 	wdire facing;
 	wdire from;
 	waydump*next_way;
+	bool isroot;
 	
 	waydump(wdire wfrom)
 	{
 		from = wfrom;
 		from = getR(wfrom);
 		next_way = nullptr;
+		isroot = false;
+	}
+	
+	waydump(wdire wfrom, bool ifroot)
+	{
+		from = wfrom;
+		from = getR(wfrom);
+		next_way = nullptr;
+		isroot = ifroot;
+	}
+	
+	vector2<int> posdump()
+	{
+		vector2<int> pos={0,0};
+		switch(from)
+		{
+		case UP:
+			t.y--;
+			break;
+		case DOWN:
+			t.y++;
+			break;
+		case LEFT:
+			t.x--;
+			break;
+		case RIGHT:
+			t.x++;
+			break;
+		}
+		if(next_way==nullptr)
+		{
+			return pos;
+		}
+		else
+		{
+			vector2<int> tempos = next_way->posdump();
+			pos.x += tempos
+			return pos;
+		}
 	}
 	
 	wdire turnL()
 	{
 		return facing = getL(facing);
+	}
+	
+	wdire turnR()
+	{
+		return facing = getR(facing);
+	}
+	
+	wdire turnto(wdire to)
+	{
+		return facing = getR(to);
 	}
 	
 	bool ifgoesback() const
@@ -162,6 +212,8 @@ class ABot{
 		memdire = new waydump(RIGHT);
 	}
 	
+	
+	
 	vector2<int> getplus() const
 	{
 		vector2<int> t;
@@ -185,6 +237,35 @@ class ABot{
 	}
 	
 	blockt scan()
+	{
+		vector2<int> t = getplus();
+		if(t.x<0 || t.x>PXMAX || t.y<0 || t.y>PYMAX)
+		{
+			return WALL;
+		}
+		else
+		{
+			switch(getpark(t.x,t.y))
+			{
+			case WALL:
+				return route[t.y][t.x]=WALL;
+			case TARGET:
+				if(gettarget(t.x,t.y)!=0)
+				{
+					return route[t.y][t.x]=TARGET;
+				}
+			case SPAWN:
+			case BLANK:
+				return route[t.y][t.x]=BLANK;
+				break;
+			case UNDEF:
+			default:
+				throw;
+			}
+		}
+	}
+	
+	bool grab()
 	{
 		vector2<int> t = getplus();
 		if(t.x<0 || t.x>PXMAX || t.y<0 || t.y>PYMAX)
