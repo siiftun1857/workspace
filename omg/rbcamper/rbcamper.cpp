@@ -185,14 +185,14 @@ public:
 		return retpos;
 	}
 	
-	wdire turnL()
+	/*wdire turnL()
 	{
 		if(next_way==nullptr)
 		{
 			return facing = getL(facing);
 		}
 		return next_way->turnL();
-	}
+	}*/
 	
 	wdire turnR()
 	{
@@ -378,11 +378,11 @@ class ABot{
 		{
 			case WALL:
 				cout<<"WALL";
-				memdire->turnL();
+				memdire->turnR();
 				if(memdire->ifgoesback())
 				{
 					memdire->gobackward();
-					memdire->turnL();
+					memdire->turnR();
 				}
 				return 0;
 			case TARGET:
