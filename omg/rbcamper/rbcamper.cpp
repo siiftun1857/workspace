@@ -75,7 +75,7 @@ inline wdire getR(wdire wfrom)
 }
 inline string wdireToString(wdire wfrom)
 {
-	switch(wfrom)
+	/*switch(wfrom)
 	{
 	case UP:
 		return "UP";
@@ -85,6 +85,17 @@ inline string wdireToString(wdire wfrom)
 		return "DOWN";
 	case RIGHT:
 		return "RIGHT";
+	}*/
+	switch(wfrom)
+	{
+	case UP:
+		return "^";
+	case LEFT:
+		return "<";
+	case DOWN:
+		return "v";
+	case RIGHT:
+		return ">";
 	}
 }
 
@@ -176,22 +187,38 @@ public:
 	
 	wdire turnL()
 	{
-		return facing = getL(facing);
+		if(next_way==nullptr)
+		{
+			return facing = getL(facing);
+		}
+		return next_way->turnL();
 	}
 	
 	wdire turnR()
 	{
-		return facing = getR(facing);
+		if(next_way==nullptr)
+		{
+			return facing = getR(facing);
+		}
+		return next_way->turnR();
 	}
 	
 	wdire turnto(wdire to)
 	{
-		return facing = getR(to);
+		if(next_way==nullptr)
+		{
+			return facing = getR(to);
+		}
+		return next_way->turnto(to);
 	}
 	
 	bool ifgoesback() const
 	{
-		return facing == from;
+		if(next_way==nullptr)
+		{
+			return facing == from;
+		}
+		return next_way->gobackward();
 	}
 	
 	wdire getdire() const
@@ -265,24 +292,25 @@ class ABot{
 		return pos=getpos();
 	}
 	
-	vector2<int> getplus() const
+	vector2<int> getplus()
 	{
+		syncpos();
 		vector2<int> t;
 		t.x=pos.x;
 		t.y=pos.y;
 		switch(memdire->getdire())
 		{
 		case UP:
-			t.y++;
-			break;
-		case DOWN:
 			t.y--;
 			break;
+		case DOWN:
+			t.y++;
+			break;
 		case LEFT:
-			t.x++;
+			t.x--;
 			break;
 		case RIGHT:
-			t.x--;
+			t.x++;
 			break;
 		}
 	}
@@ -290,7 +318,7 @@ class ABot{
 	blockt scan()
 	{
 		vector2<int> t = getplus();
-		if(t.x<0 || t.x>PXMAX || t.y<0 || t.y>PYMAX)
+		if(t.x<0 || t.y<0 || t.x>PXMAX || t.y>PYMAX)
 		{
 			return WALL;
 		}
@@ -348,16 +376,37 @@ class ABot{
 		blockt scanresult=scan();
 		switch(scanresult)
 		{
-			
+			case WALL:
+				cout<<"WALL";
+				memdire->turnL();
+				if(memdire->ifgoesback())
+				{
+					memdire->gobackward();
+					memdire->turnL();
+				}
+				return 0;
+			case TARGET:
+				return -1;
+			case SPAWN:
+			case BLANK:
+				cout<<"BLANK";
+				memdire->goforward();
+				return 0;
+				break;
+			case UNDEF:
+			default:
+				throw;
 		}
 	}
 	
 	int run()
 	{
 		int stepresult=0;
+		output();
 		while(true)
 		{
 			stepresult=step();
+			output();
 			if(stepresult==-1)
 				break;
 		}
@@ -429,6 +478,7 @@ int main(int argc, char* argv[], char* envp[])
 	cout<<endl;
 	
 	aibot1.output();
+	aibot1.run();
 	
 	
 	//mainexit
